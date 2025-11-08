@@ -1,1 +1,30 @@
+name: Deploy servicio Cliente
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clonar repositorio
+        uses: actions/checkout@v4
+
+      - name: Deploy on VPS
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd ~/TestLD/docker-cliente
+            git pull origin main
+            echo "Código cliente actualizado"
+
+            docker-compose -f ~/TestLD/docker-compose.yml build cliente
+            docker-compose -f ~/TestLD/docker-compose.yml up -d --no-deps cliente
+            echo "Cliente desplegado sin reiniciar MySQL ni Notificación"
 
