@@ -29,7 +29,7 @@ public class ClienteServiceImpl implements ClienteService {
             throw new RuntimeException("El email ya está registrado");
         }
         if (dto.getDui() != null && clienteRepository.existsByDui(dto.getDui())) {
-            throw new RuntimeException("El DUI ya está registrado");
+            throw new RuntimeException("El DUI y nombre ya está registrado");
         }
         if (dto.getNit() != null && clienteRepository.existsByNit(dto.getNit())) {
             throw new RuntimeException("El NIT ya está registrado");
